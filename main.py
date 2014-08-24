@@ -1,6 +1,9 @@
 import sys
+import threading
+import multiprocessing
 import pandas as pd
 from PySide import QtGui
+import matplotlib.pyplot as plt
 from table import DataTableWidget
 
 
@@ -30,6 +33,9 @@ class MainWindow(QtGui.QMainWindow):
         describe_action.triggered.connect(self._describe)
         statistics_menu.addAction(describe_action)
         plot_menu = menu.addMenu('&Plot')
+        scatter_action = QtGui.QAction('&Scatter', self)
+        scatter_action.triggered.connect(self._plot_scatter)
+        plot_menu.addAction(scatter_action)
 
     def _add_table(self, table_name, table):
         if table_name in self._data_tables:
@@ -51,6 +57,33 @@ class MainWindow(QtGui.QMainWindow):
         description = self._data_tables[table_name].describe()
         new_table_name = 'description: {0}'.format(table_name)
         self._add_table(new_table_name, description)
+
+    def _plot_scatter(self):
+        table_name = self._table_views.current_table_name()
+        table = self._data_tables[table_name]
+        p = multiprocessing.Process(
+            target=plot_scatter_process, args=(table,))
+        p.start()
+
+
+def plot_scatter_process(data_frame):
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    pd.scatter_matrix(data_frame)
+    plt.show()
+
+
+class PlotThread(threading.Thread):
+
+    def __init__(self, plot_fun, *args):
+        super(PlotThread, self).__init__()
+        self.plot_fun = plot_fun
+        self.args = args
+
+    def run(self):
+        self.plot_fun(*self.args)
+        plt.show()
+
 
 
 class CentralWidget(QtGui.QWidget):
