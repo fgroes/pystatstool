@@ -1,5 +1,4 @@
 import sys
-import threading
 import multiprocessing
 import pandas as pd
 from PySide import QtGui
@@ -71,19 +70,6 @@ def plot_scatter_process(data_frame):
     import matplotlib.pyplot as plt
     pd.scatter_matrix(data_frame)
     plt.show()
-
-
-class PlotThread(threading.Thread):
-
-    def __init__(self, plot_fun, *args):
-        super(PlotThread, self).__init__()
-        self.plot_fun = plot_fun
-        self.args = args
-
-    def run(self):
-        self.plot_fun(*self.args)
-        plt.show()
-
 
 
 class CentralWidget(QtGui.QWidget):
