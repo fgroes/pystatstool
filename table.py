@@ -43,7 +43,7 @@ class TableModel(QtCore.QAbstractTableModel):
             if orientation == QtCore.Qt.Horizontal:
                 return self._table.columns[int(index)]
             elif orientation == QtCore.Qt.Vertical:
-                return index + 1
+                return self._table.index[int(index)]
             else:
                 return None
         except:
