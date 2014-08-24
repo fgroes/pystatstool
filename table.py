@@ -61,17 +61,17 @@ class DataTableWidget(QtGui.QWidget):
     def __init__(self, parent=None):
         self._parent = parent
         super(DataTableWidget, self).__init__(self._parent)
-        self.initUI()
+        self.init_ui()
 
-    def setData(self, data):
+    def init_ui(self):
         tableModel = TableModel()
-        tableModel.setTable(data)
-        self._tableView.setModel(tableModel)
-
-    def initUI(self):
-        tableModel = TableModel()
-        self._tableView = QtGui.QTableView()
-        self._tableView.setModel(tableModel)
+        self._table_view = QtGui.QTableView()
+        self._table_view.setModel(tableModel)
         vbox = QtGui.QVBoxLayout(self)
-        vbox.addWidget(self._tableView)
+        vbox.addWidget(self._table_view)
         self.show()
+
+    def set_data(self, data):
+        table_model = TableModel()
+        table_model.setTable(data)
+        self._table_view.setModel(table_model)
