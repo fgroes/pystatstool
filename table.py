@@ -67,7 +67,6 @@ class DataTableWidget(QtGui.QWidget):
         tableModel = TableModel()
         tableModel.setTable(data)
         self._tableView.setModel(tableModel)
-        print('this is it', tableModel.headerData(0, QtCore.Qt.Horizontal))
 
     def initUI(self):
         tableModel = TableModel()
